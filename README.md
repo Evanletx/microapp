@@ -20,6 +20,17 @@ This project provides a lightweight Flask web application for logging your WFH s
    ```
    The application will be available at [http://localhost:5000](http://localhost:5000).
 
+### Desktop GUI
+
+To launch the work log in a standalone desktop window, run:
+
+```bash
+python gui.py
+```
+
+This uses [pywebview](https://pywebview.flowrl.com/) to embed the existing Flask
+application in a minimal desktop window while keeping the same look and feel.
+
 ## Disclaimer
 
 This tool is intended to help with personal record keeping. Always consult official ATO guidelines or a tax professional when preparing your tax return.
