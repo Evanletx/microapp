@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tax Return FY25-26 Work Log</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>FY25-26 Work Log</h1>
+    <div class="summary">
+      <div class="summary-card"><h3>Total WFH Hours</h3><div class="value" id="totalWfh">0</div></div>
+      <div class="summary-card"><h3>Client Visits</h3><div class="value" id="totalVisits">0</div></div>
+      <div class="summary-card"><h3>Total KM Travelled</h3><div class="value" id="totalKm">0 km</div></div>
+      <div class="summary-card"><h3>Working Days</h3><div class="value" id="totalDays">0</div></div>
+    </div>
+    <div class="controls">
+      <button class="regen-btn" onclick="regenerate()">Regenerate</button>
+      <button class="clear-btn" onclick="showClearModal()">Clear All</button>
+      <button class="import-btn" onclick="document.getElementById('csvFile').click()">Import CSV</button>
+      <input type="file" id="csvFile" accept=".csv" style="display:none" onchange="importCSV(event)" />
+      <button class="export-btn" onclick="exportCSV()">Export CSV</button>
+      <button class="save-btn" onclick="saveToFile()">Save File</button>
+    </div>
+    
+    <!-- Status indicator -->
+    <div id="status" class="status"></div>
+    
+    <!-- Clear Confirmation Modal -->
+    <div id="clearModal" class="modal">
+      <div class="modal-content">
+        <h3>Clear All Data?</h3>
+        <p>This will remove all entered data and reset the work log to empty entries with only public holidays pre-filled. This action cannot be undone.</p>
+        <div class="modal-buttons">
+          <button class="confirm-btn" onclick="confirmClear()">Clear All</button>
+          <button class="cancel-btn" onclick="hideClearModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Day</th><th>Type</th><th>WFH Hours</th><th>Travel KM</th><th>Notes</th></tr>
+        </thead>
+        <tbody id="body"></tbody>
+      </table>
+    </div>
+    <div class="debug" id="debug" style="display:none;"></div>
+  </div>
+  
+  <!-- PERSISTENT DATA STORAGE -->
+  <script type="application/json" id="workLogData">
+  {"work":[],"isFirstLoad":true}
+  </script>
+  <script src="{{ url_for('static', filename='js/work_log.js') }}"></script>
+  
+  
+  <!-- Footer credit -->
+  <footer style="
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    font-size: 12px;
+    color: #666;
+    z-index: 1000;
+  ">
+    © 2025 Damian Choi - All Rights Reserved.
+  </footer>
+</body>
+</html>
