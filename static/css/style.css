@@ -81,6 +81,10 @@
         .confirm-btn:hover { background: #c0392b; }
         .cancel-btn { background: #95a5a6; color: white; }
         .cancel-btn:hover { background: #7f8c8d; }
+        .yes-btn { background: #2ecc71; color: white; }
+        .yes-btn:hover { background: #27ae60; }
+        .no-btn { background: #e74c3c; color: white; }
+        .no-btn:hover { background: #c0392b; }
 
         /* Table */
         .table-container { overflow-x: auto; }
