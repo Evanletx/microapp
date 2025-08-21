@@ -25,7 +25,7 @@ class Api:
         if save and data:
             self.save_data(data)
         should_exit = True
-        window.destroy()
+        webview.destroy_window(window)
 
 
 def start_flask():
