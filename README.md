@@ -4,16 +4,21 @@ A simple Python microapp for recording work-from-home (WFH) hours to assist with
 
 ## Overview
 
-This project offers a lightweight command-line tool for logging your WFH sessions. Each session captures start and end times to calculate total hours worked at home, providing a clear record for tax-time reporting.
+This project provides a lightweight Flask web application for logging your WFH sessions. Each session captures start and end times to calculate total hours worked at home, providing a clear record for tax-time reporting.
 
 ## Getting Started
 
 1. Ensure [Python](https://www.python.org/) is installed on your system.
 2. Clone this repository.
-3. (Coming soon) Run the microapp with:
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Run the microapp with:
    ```bash
    python app.py
    ```
+   The application will be available at [http://localhost:5000](http://localhost:5000).
 
 ## Disclaimer
 
