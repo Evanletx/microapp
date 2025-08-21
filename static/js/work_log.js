@@ -57,7 +57,7 @@
     }
 
     // Save data to embedded script tag
-    function save(){ 
+    function save(){
       try {
         const dataElement = document.getElementById('workLogData');
         const data = JSON.stringify({work, isFirstLoad: false});
@@ -68,28 +68,46 @@
         showStatus('Save failed: ' + e.message, 'error');
       }
     }
-    
-    // Load data from embedded script tag
-    function load(){
+
+    // Load data from persistent storage via pywebview API
+    async function load(){
+      try {
+        if(window.pywebview && window.pywebview.api){
+          const dataText = await window.pywebview.api.load_data();
+          if(dataText){
+            const saved = JSON.parse(dataText);
+            work = saved.work || [];
+            isFirstLoad = saved.isFirstLoad !== false;
+
+            if(work.length === 0){
+              initializeEmptyLog();
+            }
+            console.log('Data loaded from file, entries:', work.length);
+            return;
+          }
+        }
+      } catch(e){
+        console.warn('Load from file failed:', e);
+      }
+
+      // Fallback to embedded script tag
       try {
         const dataElement = document.getElementById('workLogData');
         const dataText = dataElement.textContent.trim();
-        
-        if(dataText) {
+        if(dataText){
           const saved = JSON.parse(dataText);
           work = saved.work || [];
           isFirstLoad = saved.isFirstLoad !== false;
-          
-          if(work.length === 0) {
+          if(work.length === 0){
             initializeEmptyLog();
           }
           console.log('Data loaded from embedded script tag, entries:', work.length);
           return;
         }
-      } catch(e) {
+      } catch(e){
         console.warn('Load failed:', e);
       }
-      
+
       // Fallback to initialize empty log
       initializeEmptyLog();
     }
@@ -115,6 +133,20 @@
         work.push({date: isoDate, day: dn, type, hours, km, notes});
       }
       save();
+    }
+
+    // Modal handlers for saving on exit
+    function showSaveOnExitModal(){
+      document.getElementById('saveModal').style.display = 'block';
+    }
+
+    async function confirmSaveExit(){
+      const data = JSON.stringify({work, isFirstLoad: false});
+      await window.pywebview.api.exit_app(true, data);
+    }
+
+    async function cancelSaveExit(){
+      await window.pywebview.api.exit_app(false);
     }
 
     function genLog(){
@@ -470,6 +502,14 @@
     }
 
     // Initialize
-    load(); 
-    render(); 
-    updateSummary();
+    async function init(){
+      await load();
+      render();
+      updateSummary();
+    }
+
+    if(window.pywebview){
+      window.addEventListener('pywebviewready', init);
+    } else {
+      init();
+    }
